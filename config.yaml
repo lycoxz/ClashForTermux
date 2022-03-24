@@ -1,8 +1,8 @@
 port: 7890
 socks-port: 7891
-#redir-port: 7892
+redir-port: 7892
 mixed-port: 7893
-#tproxy-port: 7895
+tproxy-port: 7895
 mode: global
 log-level: info
 allow-lan: true
@@ -41,7 +41,7 @@ proxy-providers:
 #Gunakan tanda pagar menghiden, jika salah satu server tidak kepakai
 proxy-groups:
 - name: BEST-PING
-  type: load-balance
+  type: url-test
   strategy: consistent-hashing
   disable-udp: false
   use:
@@ -51,7 +51,6 @@ proxy-groups:
   interval: '300'
    
 rules:
-#- RULE,direct,DIRECT
 - MATCH,VMESS
 - MATCH,TROJAN-GO
 - MATCH,BEST-PING
