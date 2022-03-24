@@ -1,8 +1,8 @@
 port: 7890
 socks-port: 7891
-#redir-port: 7892
+redir-port: 7892
 mixed-port: 7893
-#tproxy-port: 7895
+tproxy-port: 7895
 mode: global
 log-level: info
 allow-lan: true
@@ -30,26 +30,27 @@ proxy-providers:
       enable: false
       url: http://www.gstatic.com/generate_204
       interval: 300
-  Trojan:
-    type: file
-    path: "./trojan.yaml"
-    health-check:
-      enable: false
-      url: http://www.gstatic.com/generate_204
-      interval: 300
+  Trojan-go:
+     type: file
+     path: "./trojan-go.yaml"
+     health-check:
+        enable: true
+        url: http://www.gstatic.com/generate_204
+        interval: 300
       
 #Gunakan tanda pagar menghiden, jika salah satu server tidak kepakai
 proxy-groups:
-- name: SERVER
-  type: load-balance
+- name: BEST-PING
+  type: url-test
   strategy: consistent-hashing
   disable-udp: false
   use:
     - Vmess
-  #- Trojan 
+    - Trojan-go 
   url: http://www.gstatic.com/generate_204
   interval: '300'
    
 rules:
-- MATCH,SERVER
-- MATCH,GLOBAL
+- MATCH,VMESS
+- MATCH,TROJAN-GO
+- MATCH,BEST-PING
